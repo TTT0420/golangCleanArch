@@ -2,6 +2,8 @@ version: '3'
 services:
   mysql:
     image: mysql:8.0.28
+    volumes:
+      - db-data:/var/lib/mysql
     platform: linux/amd64
     container_name: mysql-container
     ports:
@@ -23,4 +25,8 @@ services:
       - "8080:8080"
     depends_on:
       - mysql
+    volumes:
+      - .:/app
+volumes:
+  db-data:
     

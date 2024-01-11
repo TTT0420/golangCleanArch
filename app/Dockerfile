@@ -1,21 +1,23 @@
-# goバージョン
-FROM golang:1.20-alpine
+# ベースイメージ
+FROM golang:1.20-alpine AS development
 
-#airのインストール
-RUN apk update && apk add git 
+# 作業ディレクトリの設定
+WORKDIR /app
+
+# air のインストール
 RUN go install github.com/cosmtrek/air@latest
 
-# ワーキングディレクトリの変更
-WORKDIR /app
-# ディレクトリの作成
-RUN mkdir -p /go/src/api-server
-# ワーキングディレクトリの設定
-WORKDIR /go/src/api-server
-# ホストのファイルをコンテナの作業ディレクトリに移行
-ADD . /go/src/api-server
-WORKDIR /go/src/api-server/cmd/api
+# Goモジュールファイルをコピー
+COPY go.mod go.sum ./
 
+# 依存関係をダウンロード
+RUN go mod download
 
-# コンテナ起動時にアプリケーションを実行
-CMD ["go","run","main.go"]
+# ソースコードをコピー
+COPY . .
 
+# air 設定ファイルのコピー
+COPY .air.toml .
+
+# air を起動コマンドとして設定
+CMD ["air"]

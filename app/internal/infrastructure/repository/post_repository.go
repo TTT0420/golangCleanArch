@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"fmt"
-
 	"github.com/TTT0420/golangCleanArch/internal/domain"
 	"gorm.io/gorm"
 )
@@ -17,7 +15,6 @@ func NewPostRepositoryImpl(db *gorm.DB) *PostRepositoryImpl {
 }
 
 func (r *PostRepositoryImpl) GetAllPosts() ([]domain.Post, error) {
-	fmt.Println("GetAllPosts!!")
 	var posts []domain.Post
 	result := r.DB.Find(&posts)
 	if result.Error != nil {
