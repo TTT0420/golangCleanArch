@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"fmt"
-
 	"github.com/TTT0420/golangCleanArch/internal/domain"
 )
 
@@ -17,6 +15,5 @@ func NewPostUsecase(repo domain.PostRepository) *PostUsecase {
 }
 
 func (u *PostUsecase) GetAllPosts() ([]domain.Post, error) {
-	fmt.Println("usecase層")
 	return u.PostRepo.GetAllPosts()
 }
