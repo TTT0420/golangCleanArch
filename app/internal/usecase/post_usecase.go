@@ -1,19 +1,20 @@
 package usecase
 
 import (
-	"github.com/TTT0420/golangCleanArch/internal/domain"
+	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
+	"github.com/TTT0420/golangCleanArch/internal/domain/repository"
 )
 
 type PostUsecase struct {
-	PostRepo domain.PostRepository
+	PostRepo repository.PostRepository
 }
 
-func NewPostUsecase(repo domain.PostRepository) *PostUsecase {
+func NewPostUsecase(repo repository.PostRepository) *PostUsecase {
 	return &PostUsecase{
 		PostRepo: repo,
 	}
 }
 
-func (u *PostUsecase) GetAllPosts() ([]domain.Post, error) {
+func (u *PostUsecase) GetAllPosts() ([]entity.Post, error) {
 	return u.PostRepo.GetAllPosts()
 }
