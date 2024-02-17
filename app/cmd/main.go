@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/TTT0420/golangCleanArch/internal/interface/router"
 	"github.com/gin-gonic/gin"
 )
 
