@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
+	entity "github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"gorm.io/gorm"
 )
 

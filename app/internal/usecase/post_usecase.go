@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
+	entity "github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/TTT0420/golangCleanArch/internal/domain/repository"
 )
 
