@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+
 	entity "github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"gorm.io/gorm"
 )
@@ -8,6 +10,8 @@ import (
 type PostRepository interface {
 	GetAllPosts() ([]entity.Post, error)
 	AddPost(*entity.Post) error
+	UpdatePostById(*entity.Post) error
+	IsPostExist(int) bool
 }
 
 type PostRepositoryImpl struct {
@@ -31,15 +35,25 @@ func (r *PostRepositoryImpl) GetAllPosts() ([]entity.Post, error) {
 
 // 投稿登録
 func (r *PostRepositoryImpl) AddPost(post *entity.Post) error {
-	p := &entity.Post{
-		UserID:  post.UserID,
-		Title:   post.Title,
-		Content: post.Content,
-		Status:  1,
-	}
-
-	if err := r.DB.Omit("CreatedDate", "UpdatedDate").Create(&p).Error; err != nil {
+	if err := r.DB.Omit("CreatedDate", "UpdatedDate").Create(&post).Error; err != nil {
 		return err
 	}
 	return nil
+}
+
+// 投稿編集
+func (r *PostRepositoryImpl) UpdatePostById(post *entity.Post) error {
+	if err := r.DB.Where(post.ID).Updates(&post).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// idより投稿を取得
+func (r *PostRepositoryImpl) IsPostExist(id int) bool {
+	var p entity.Post
+	if err := r.DB.Where(id).First(&p).Error; errors.Is(err, gorm.ErrRecordNotFound) {
+		return false
+	}
+	return true
 }

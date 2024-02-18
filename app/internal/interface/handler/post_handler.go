@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/TTT0420/golangCleanArch/internal/usecase"
@@ -31,6 +32,14 @@ func (h *PostHandler) GetAllPosts(c *gin.Context) {
 func (h *PostHandler) AddPost(c *gin.Context) {
 
 	if err := h.PostUsecase.AddPost(c); err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{"message": "someting went wrong, try again"})
+		c.JSON(http.StatusBadGateway, gin.H{"message": err})
+	}
+}
+
+// 投稿編集
+func (h *PostHandler) EditPost(c *gin.Context) {
+	if err := h.PostUsecase.EditPost(c); err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusBadGateway, gin.H{"message": err})
 	}
 }
