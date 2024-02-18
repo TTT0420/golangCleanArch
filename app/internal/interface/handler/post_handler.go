@@ -17,6 +17,7 @@ func NewPostHandler(postUsecase usecase.PostUsecase) *PostHandler {
 	}
 }
 
+// 全件取得
 func (h *PostHandler) GetAllPosts(c *gin.Context) {
 	posts, err := h.PostUsecase.GetAllPosts()
 	if err != nil {
@@ -24,4 +25,12 @@ func (h *PostHandler) GetAllPosts(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": posts})
+}
+
+// 投稿登録
+func (h *PostHandler) AddPost(c *gin.Context) {
+
+	if err := h.PostUsecase.AddPost(c); err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{"message": "someting went wrong, try again"})
+	}
 }

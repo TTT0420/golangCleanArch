@@ -14,6 +14,7 @@ func SetupRoutes(r *gin.Engine) {
 	postUsecase := usecase.NewPostUsecase(postRepo)
 	postHandler := handler.NewPostHandler(*postUsecase)
 
-	r.GET("/posts", postHandler.GetAllPosts)
+	r.GET("/get_posts", postHandler.GetAllPosts)
+	r.POST("/add_post", postHandler.AddPost)
 
 }
