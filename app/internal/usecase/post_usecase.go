@@ -52,3 +52,18 @@ func (u *PostUsecase) EditPost(c *gin.Context) error {
 
 	return u.PostRepo.UpdatePostById(&post)
 }
+
+// 投稿削除
+func (u *PostUsecase) DeletePost(c *gin.Context) error {
+	var post entity.Post
+	if err := c.ShouldBindJSON(&post); err != nil {
+		return err
+	}
+
+	// 存在確認
+	if !u.PostRepo.IsPostExist(post.ID) {
+		return errors.New("there is no post")
+	}
+
+	return u.PostRepo.DeletePostById(&post)
+}

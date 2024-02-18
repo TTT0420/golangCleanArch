@@ -12,6 +12,7 @@ type PostRepository interface {
 	AddPost(*entity.Post) error
 	UpdatePostById(*entity.Post) error
 	IsPostExist(int) bool
+	DeletePostById(*entity.Post) error
 }
 
 type PostRepositoryImpl struct {
@@ -49,11 +50,20 @@ func (r *PostRepositoryImpl) UpdatePostById(post *entity.Post) error {
 	return nil
 }
 
-// idより投稿を取得
+// idより投稿の存在確認
 func (r *PostRepositoryImpl) IsPostExist(id int) bool {
 	var p entity.Post
 	if err := r.DB.Where(id).First(&p).Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		return false
 	}
 	return true
+}
+
+// 投稿削除
+func (r *PostRepositoryImpl) DeletePostById(post *entity.Post) error {
+	post.DeleteFlg = true
+	if err := r.DB.Updates(&post).Error; err != nil {
+		return err
+	}
+	return nil
 }

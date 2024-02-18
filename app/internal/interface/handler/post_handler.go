@@ -43,3 +43,10 @@ func (h *PostHandler) EditPost(c *gin.Context) {
 		c.JSON(http.StatusBadGateway, gin.H{"message": err})
 	}
 }
+
+// 投稿削除
+func (h *PostHandler) DeletePost(c *gin.Context) {
+	if err := h.PostUsecase.DeletePost(c); err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{"message": err})
+	}
+}
