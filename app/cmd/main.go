@@ -10,5 +10,5 @@ func main() {
 	r := gin.Default()
 	r.Use(pkg.LoggingRqs)
 	infrastructure.SetupRoutes(r)
-	r.Run(":8080")
+	r.Run()
 }
