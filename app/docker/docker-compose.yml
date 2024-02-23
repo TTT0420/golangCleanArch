@@ -14,8 +14,8 @@ services:
       - TZ="Asia/Tokyo"
   app:
     build: 
-      context: ./
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
     environment:
       - DB_HOST=mysql
       - DB_USER=root

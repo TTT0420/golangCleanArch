@@ -24,10 +24,10 @@ func NewPostHandler(postUsecase usecase.PostUsecase) *PostHandler {
 func (h *PostHandler) GetAllPosts(c *gin.Context) {
 	posts, err := h.PostUsecase.GetAllPosts()
 	if err != nil {
-		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{pkg.ResMsg: pkg.ResNG}, err)
+		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
-	pkg.RespondJSON(c, http.StatusOK, gin.H{pkg.ResMsg: pkg.ResOK, pkg.ResPosts: posts}, nil)
+	pkg.RespondJSON(c, http.StatusOK, pkg.GeneralResponse{Result: pkg.ResOK, Posts: posts})
 
 }
 
@@ -35,7 +35,7 @@ func (h *PostHandler) GetAllPosts(c *gin.Context) {
 func (h *PostHandler) AddPost(c *gin.Context) {
 	var post entity.Post
 	if err := c.ShouldBindJSON(&post); err != nil {
-		pkg.RespondJSON(c, http.StatusBadRequest, gin.H{pkg.ResMsg: pkg.ResNG}, err)
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
 
@@ -44,14 +44,14 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 		// 型アサーション
 		if appErr, ok := err.(*pkg.AppError); ok {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, gin.H{pkg.ResMsg: appErr.Message}, nil)
+			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
-		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{pkg.ResMsg: pkg.ResMsgInternalServerErr}, nil)
+		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
-	pkg.RespondJSON(c, http.StatusOK, gin.H{pkg.ResMsg: pkg.ResOK, pkg.ResID: id}, nil)
+	pkg.RespondJSON(c, http.StatusOK, pkg.GeneralResponse{Result: pkg.ResOK, ID: id})
 
 }
 
@@ -61,13 +61,13 @@ func (h *PostHandler) EditPost(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		pkg.RespondJSON(c, http.StatusBadRequest, gin.H{pkg.ResMsg: pkg.ResNG}, nil)
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
 
 	var post entity.Post
 	if err := c.ShouldBindJSON(&post); err != nil {
-		pkg.RespondJSON(c, http.StatusBadRequest, gin.H{pkg.ResMsg: pkg.ResNG}, err)
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
 	// パスパラメーターのIDをセット
@@ -76,14 +76,14 @@ func (h *PostHandler) EditPost(c *gin.Context) {
 		// 型アサーション
 		if appErr, ok := err.(*pkg.AppError); ok {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, gin.H{pkg.ResMsg: appErr.Message}, nil)
+			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
-		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{pkg.ResMsg: pkg.ResMsgInternalServerErr}, nil)
+		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
-	pkg.RespondJSON(c, http.StatusOK, gin.H{pkg.ResMsg: pkg.ResOK, pkg.ResID: id}, nil)
+	pkg.RespondJSON(c, http.StatusOK, pkg.GeneralResponse{Result: pkg.ResOK, ID: id})
 
 }
 
@@ -93,7 +93,7 @@ func (h *PostHandler) DeletePost(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		pkg.RespondJSON(c, http.StatusBadRequest, gin.H{pkg.ResMsg: pkg.ResNG}, nil)
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
 
@@ -101,13 +101,13 @@ func (h *PostHandler) DeletePost(c *gin.Context) {
 		// 型アサーション
 		if appErr, ok := err.(*pkg.AppError); ok {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, gin.H{pkg.ResMsg: appErr.Message}, nil)
+			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
-		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{pkg.ResMsg: pkg.ResMsgInternalServerErr}, nil)
+		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
-	pkg.RespondJSON(c, http.StatusOK, gin.H{pkg.ResMsg: pkg.ResOK, pkg.ResID: id}, nil)
+	pkg.RespondJSON(c, http.StatusOK, pkg.GeneralResponse{Result: pkg.ResOK, ID: id})
 
 }
