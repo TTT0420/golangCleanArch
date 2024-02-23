@@ -36,11 +36,11 @@ func (r *PostRepositoryImpl) AddPost(post *entity.Post) (int, error) {
 }
 
 // 投稿編集
-func (r *PostRepositoryImpl) UpdatePostByID(post *entity.Post) (int, error) {
+func (r *PostRepositoryImpl) UpdatePostByID(post *entity.Post) error {
 	if err := r.DB.Model(&entity.Post{}).Where("ID = ?", post.ID).Updates(post).Error; err != nil {
-		return pkg.FailedID, err
+		return err
 	}
-	return post.ID, nil
+	return nil
 }
 
 // IDより投稿の存在確認
@@ -54,10 +54,9 @@ func (r *PostRepositoryImpl) IsPostExist(ID int) bool {
 }
 
 // 投稿削除
-func (r *PostRepositoryImpl) DeletePostByID(post *entity.Post) (int, error) {
-	post.IsDeleted = true
-	if err := r.DB.Model(&entity.Post{}).Where("is_deleted").Updates(&post).Error; err != nil {
-		return pkg.FailedID, err
+func (r *PostRepositoryImpl) DeletePostByID(id int) error {
+	if err := r.DB.Model(&entity.Post{}).Where("id = ?", id).Update("IsDeleted", true).Error; err != nil {
+		return err
 	}
-	return post.ID, nil
+	return nil
 }

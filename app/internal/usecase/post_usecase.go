@@ -1,12 +1,9 @@
 package usecase
 
 import (
-	"errors"
-
 	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/TTT0420/golangCleanArch/internal/domain/repository"
 	"github.com/TTT0420/golangCleanArch/pkg"
-	"github.com/gin-gonic/gin"
 )
 
 type PostUsecase struct {
@@ -25,42 +22,24 @@ func (u *PostUsecase) GetAllPosts() ([]entity.Post, error) {
 }
 
 // 新規追加
-func (u *PostUsecase) AddPost(c *gin.Context) (int, error) {
-
-	var post entity.Post
-	if err := c.ShouldBindJSON(&post); err != nil {
-		return pkg.FailedID, err
-	}
+func (u *PostUsecase) AddPost(post entity.Post) (int, error) {
 	return u.PostRepo.AddPost(&post)
 }
 
 // 投稿編集
-func (u *PostUsecase) EditPost(c *gin.Context) (int, error) {
-
-	var post entity.Post
-	if err := c.ShouldBindJSON(&post); err != nil {
-		return pkg.FailedID, err
-	}
-
+func (u *PostUsecase) EditPostByID(post entity.Post) error {
 	// 存在確認
 	if !u.PostRepo.IsPostExist(post.ID) {
-		return pkg.FailedID, errors.New("there is no post")
+		return pkg.ErrRecordNotFound(post.ID)
 	}
-
 	return u.PostRepo.UpdatePostByID(&post)
 }
 
 // 投稿削除
-func (u *PostUsecase) DeletePostByID(c *gin.Context) (int, error) {
-	var post entity.Post
-	if err := c.ShouldBindJSON(&post); err != nil {
-		return pkg.FailedID, err
-	}
-
+func (u *PostUsecase) DeletePostByID(id int) error {
 	// 存在確認
-	if !u.PostRepo.IsPostExist(post.ID) {
-		return pkg.FailedID, errors.New("there is no post")
+	if !u.PostRepo.IsPostExist(id) {
+		return pkg.ErrRecordNotFound(id)
 	}
-
-	return u.PostRepo.DeletePostByID(&post)
+	return u.PostRepo.DeletePostByID(id)
 }

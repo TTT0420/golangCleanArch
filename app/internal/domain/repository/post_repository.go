@@ -7,7 +7,7 @@ import (
 type PostRepository interface {
 	GetAllPosts() ([]entity.Post, error)
 	AddPost(*entity.Post) (int, error)
-	UpdatePostByID(*entity.Post) (int, error)
+	UpdatePostByID(*entity.Post) error
 	IsPostExist(int) bool
-	DeletePostByID(*entity.Post) (int, error)
+	DeletePostByID(int) error
 }
