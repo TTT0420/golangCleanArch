@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	entity "github.com/TTT0420/golangCleanArch/internal/domain/entity"
+	"github.com/TTT0420/golangCleanArch/pkg"
 	"gorm.io/gorm"
 )
 
@@ -26,35 +27,37 @@ func (r *PostRepositoryImpl) GetAllPosts() ([]entity.Post, error) {
 }
 
 // 投稿登録
-func (r *PostRepositoryImpl) AddPost(post *entity.Post) error {
-	if err := r.DB.Omit("CreatedDate", "UpdatedDate").Create(&post).Error; err != nil {
-		return err
+func (r *PostRepositoryImpl) AddPost(post *entity.Post) (int, error) {
+	if err := r.DB.Omit("CreatedDate", "UpdatedDate").Create(post).Error; err != nil {
+		return pkg.FailedId, err
 	}
-	return nil
+
+	return post.Id, nil
 }
 
 // 投稿編集
-func (r *PostRepositoryImpl) UpdatePostById(post *entity.Post) error {
-	if err := r.DB.Where(post.ID).Updates(&post).Error; err != nil {
-		return err
+func (r *PostRepositoryImpl) UpdatePostById(post *entity.Post) (int, error) {
+	if err := r.DB.Model(&entity.Post{}).Where("id = ?", post.Id).Updates(post).Error; err != nil {
+		return pkg.FailedId, err
 	}
-	return nil
+	return post.Id, nil
 }
 
 // idより投稿の存在確認
 func (r *PostRepositoryImpl) IsPostExist(id int) bool {
 	var p entity.Post
-	if err := r.DB.Where(id).First(&p).Error; errors.Is(err, gorm.ErrRecordNotFound) {
+	if err := r.DB.Model(&entity.Post{}).Where("id = ?", id).
+		First(&p).Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		return false
 	}
 	return true
 }
 
 // 投稿削除
-func (r *PostRepositoryImpl) DeletePostById(post *entity.Post) error {
-	post.DeleteFlg = true
-	if err := r.DB.Updates(&post).Error; err != nil {
-		return err
+func (r *PostRepositoryImpl) DeletePostById(post *entity.Post) (int, error) {
+	post.IsDeleted = true
+	if err := r.DB.Model(&entity.Post{}).Updates(&post).Error; err != nil {
+		return pkg.FailedId, err
 	}
-	return nil
+	return post.Id, nil
 }

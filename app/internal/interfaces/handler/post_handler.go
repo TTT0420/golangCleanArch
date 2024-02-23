@@ -43,20 +43,22 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 
 // 投稿編集
 func (h *PostHandler) EditPost(c *gin.Context) {
-	if err := h.PostUsecase.EditPost(c); err != nil {
+	id, err := h.PostUsecase.EditPost(c)
+	if err != nil {
 		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{"message": pkg.ResponseNG}, err)
 		return
 	}
-	pkg.RespondJSON(c, http.StatusOK, gin.H{"message": pkg.ResponseOK}, nil)
+	pkg.RespondJSON(c, http.StatusOK, gin.H{"message": pkg.ResponseOK, "id": id}, nil)
 
 }
 
 // 投稿削除
 func (h *PostHandler) DeletePost(c *gin.Context) {
-	if err := h.PostUsecase.DeletePost(c); err != nil {
+	id, err := h.PostUsecase.DeletePost(c)
+	if err != nil {
 		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{"message": pkg.ResponseNG}, err)
 		return
 	}
-	pkg.RespondJSON(c, http.StatusOK, gin.H{"message": pkg.ResponseOK}, nil)
+	pkg.RespondJSON(c, http.StatusOK, gin.H{"message": pkg.ResponseOK, "id": id}, nil)
 
 }
