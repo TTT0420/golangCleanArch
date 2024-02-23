@@ -9,7 +9,7 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 
-	db := InitializeDB()
+	db := database.InitalizeDB()
 	postRepo := repository.NewPostRepositoryImpl(db)
 	postUsecase := usecase.NewPostUsecase(postRepo)
 	postHandler := handler.NewPostHandler(*postUsecase)

@@ -27,3 +27,7 @@ func InitializeDB() *gorm.DB {
 	}
 	return db
 }
+
+func Aaa() {
+	return
+}
