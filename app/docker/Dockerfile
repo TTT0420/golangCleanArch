@@ -8,7 +8,7 @@ WORKDIR /app
 RUN go install github.com/cosmtrek/air@latest
 
 # Goモジュールファイルをコピー
-COPY go.mod go.sum ./
+COPY ./go.mod ./go.sum ./
 
 # 依存関係をダウンロード
 RUN go mod download

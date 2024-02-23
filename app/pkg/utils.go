@@ -1,26 +1,18 @@
 package pkg
 
 import (
-	"net/http"
-
+	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/gin-gonic/gin"
 )
 
-type ResponseData struct {
-	Message interface{} `json:"message"`
+type GeneralResponse struct {
+	Result  string        `json:"result"`
+	Message string        `json:"message,omitempty"`
+	ID      int           `json:"id,omitempty"`
+	Posts   []entity.Post `json:"posts,omitempty"`
+	Error   error         `json:"error,omitempty"`
 }
 
-type ErrorResponseData struct {
-	Message interface{} `json:"message"`
-	Error   interface{} `json:"error"`
-}
-
-func RespondJSON(c *gin.Context, statusCode int, message interface{}, err interface{}) {
-	if statusCode >= http.StatusBadRequest {
-		// エラーレスポンス
-		c.JSON(statusCode, ErrorResponseData{Message: message, Error: err})
-	} else {
-		// 正常レスポンス
-		c.JSON(statusCode, ResponseData{Message: message})
-	}
+func RespondJSON(c *gin.Context, statusCode int, resp GeneralResponse) {
+	c.JSON(statusCode, resp)
 }
