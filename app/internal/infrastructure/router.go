@@ -11,7 +11,6 @@ import (
 )
 
 func SetupRoutes(r *gin.Engine) {
-
 	// DB接続
 	db, err := database.InitializeDB()
 	if err != nil {
@@ -26,5 +25,4 @@ func SetupRoutes(r *gin.Engine) {
 	r.POST("/add_post", postHandler.AddPost)
 	r.PATCH("/edit_post", postHandler.EditPost)
 	r.DELETE("/delete_post", postHandler.DeletePost)
-
 }
