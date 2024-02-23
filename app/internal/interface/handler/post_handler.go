@@ -34,6 +34,8 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 	if err := h.PostUsecase.AddPost(c); err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{"message": err})
 	}
+	c.JSON(http.StatusOK, gin.H{"message": "created post successfully"})
+
 }
 
 // 投稿編集
@@ -42,6 +44,8 @@ func (h *PostHandler) EditPost(c *gin.Context) {
 		fmt.Println(err)
 		c.JSON(http.StatusBadGateway, gin.H{"message": err})
 	}
+	c.JSON(http.StatusOK, gin.H{"message": "post was edited successfully"})
+
 }
 
 // 投稿削除
@@ -49,4 +53,6 @@ func (h *PostHandler) DeletePost(c *gin.Context) {
 	if err := h.PostUsecase.DeletePost(c); err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{"message": err})
 	}
+	c.JSON(http.StatusOK, gin.H{"message": "post was deleted successfully"})
+
 }
