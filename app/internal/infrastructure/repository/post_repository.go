@@ -19,7 +19,7 @@ func NewPostRepositoryImpl(db *gorm.DB) *PostRepositoryImpl {
 // 投稿全件取得
 func (r *PostRepositoryImpl) GetAllPosts() ([]entity.Post, error) {
 	var posts []entity.Post
-	result := r.DB.Find(&posts)
+	result := r.DB.Model(&entity.Post{}).Find(&posts)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -28,7 +28,7 @@ func (r *PostRepositoryImpl) GetAllPosts() ([]entity.Post, error) {
 
 // 投稿登録
 func (r *PostRepositoryImpl) AddPost(post *entity.Post) (int, error) {
-	if err := r.DB.Omit("CreatedDate", "UpdatedDate").Create(post).Error; err != nil {
+	if err := r.DB.Model(&entity.Post{}).Omit("CreatedDate", "UpdatedDate").Create(post).Error; err != nil {
 		return pkg.FailedID, err
 	}
 
