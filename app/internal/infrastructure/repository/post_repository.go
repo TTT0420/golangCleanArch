@@ -3,7 +3,7 @@ package repository
 import (
 	"errors"
 
-	entity "github.com/TTT0420/golangCleanArch/internal/domain/entity"
+	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/TTT0420/golangCleanArch/pkg"
 	"gorm.io/gorm"
 )
@@ -28,6 +28,7 @@ func (r *PostRepositoryImpl) GetAllPosts() ([]entity.Post, error) {
 
 // 投稿登録
 func (r *PostRepositoryImpl) AddPost(post *entity.Post) (int, error) {
+	// CreatedDate, UpdatedDateはsqlで設定されるため、Omitで除外
 	if err := r.DB.Model(&entity.Post{}).Omit("CreatedDate", "UpdatedDate").Create(post).Error; err != nil {
 		return pkg.FailedID, err
 	}
@@ -55,6 +56,7 @@ func (r *PostRepositoryImpl) IsPostExist(ID int) bool {
 
 // 投稿削除
 func (r *PostRepositoryImpl) DeletePostByID(id int) error {
+	// 論理削除はis_deletedのみの更新で良いので、Updateを使用
 	if err := r.DB.Model(&entity.Post{}).Where("id = ?", id).Update("IsDeleted", true).Error; err != nil {
 		return err
 	}

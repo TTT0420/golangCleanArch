@@ -12,6 +12,7 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 
+	// DB接続
 	db, err := database.InitializeDB()
 	if err != nil {
 		log.Fatalf("DB接続失敗:%v", err)
