@@ -6,5 +6,5 @@ const (
 )
 
 const (
-	FailedId = iota
+	FailedID = iota
 )

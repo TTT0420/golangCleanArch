@@ -29,7 +29,7 @@ func (u *PostUsecase) AddPost(c *gin.Context) (int, error) {
 
 	var post entity.Post
 	if err := c.ShouldBindJSON(&post); err != nil {
-		return pkg.FailedId, err
+		return pkg.FailedID, err
 	}
 	return u.PostRepo.AddPost(&post)
 }
@@ -39,28 +39,28 @@ func (u *PostUsecase) EditPost(c *gin.Context) (int, error) {
 
 	var post entity.Post
 	if err := c.ShouldBindJSON(&post); err != nil {
-		return pkg.FailedId, err
+		return pkg.FailedID, err
 	}
 
 	// 存在確認
-	if !u.PostRepo.IsPostExist(post.Id) {
-		return pkg.FailedId, errors.New("there is no post")
+	if !u.PostRepo.IsPostExist(post.ID) {
+		return pkg.FailedID, errors.New("there is no post")
 	}
 
-	return u.PostRepo.UpdatePostById(&post)
+	return u.PostRepo.UpdatePostByID(&post)
 }
 
 // 投稿削除
-func (u *PostUsecase) DeletePost(c *gin.Context) (int, error) {
+func (u *PostUsecase) DeletePostByID(c *gin.Context) (int, error) {
 	var post entity.Post
 	if err := c.ShouldBindJSON(&post); err != nil {
-		return pkg.FailedId, err
+		return pkg.FailedID, err
 	}
 
 	// 存在確認
-	if !u.PostRepo.IsPostExist(post.Id) {
-		return pkg.FailedId, errors.New("there is no post")
+	if !u.PostRepo.IsPostExist(post.ID) {
+		return pkg.FailedID, errors.New("there is no post")
 	}
 
-	return u.PostRepo.DeletePostById(&post)
+	return u.PostRepo.DeletePostByID(&post)
 }

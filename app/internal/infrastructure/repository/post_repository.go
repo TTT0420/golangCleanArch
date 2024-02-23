@@ -29,24 +29,24 @@ func (r *PostRepositoryImpl) GetAllPosts() ([]entity.Post, error) {
 // 投稿登録
 func (r *PostRepositoryImpl) AddPost(post *entity.Post) (int, error) {
 	if err := r.DB.Omit("CreatedDate", "UpdatedDate").Create(post).Error; err != nil {
-		return pkg.FailedId, err
+		return pkg.FailedID, err
 	}
 
-	return post.Id, nil
+	return post.ID, nil
 }
 
 // 投稿編集
-func (r *PostRepositoryImpl) UpdatePostById(post *entity.Post) (int, error) {
-	if err := r.DB.Model(&entity.Post{}).Where("id = ?", post.Id).Updates(post).Error; err != nil {
-		return pkg.FailedId, err
+func (r *PostRepositoryImpl) UpdatePostByID(post *entity.Post) (int, error) {
+	if err := r.DB.Model(&entity.Post{}).Where("ID = ?", post.ID).Updates(post).Error; err != nil {
+		return pkg.FailedID, err
 	}
-	return post.Id, nil
+	return post.ID, nil
 }
 
-// idより投稿の存在確認
-func (r *PostRepositoryImpl) IsPostExist(id int) bool {
+// IDより投稿の存在確認
+func (r *PostRepositoryImpl) IsPostExist(ID int) bool {
 	var p entity.Post
-	if err := r.DB.Model(&entity.Post{}).Where("id = ?", id).
+	if err := r.DB.Model(&entity.Post{}).Where("ID = ?", ID).
 		First(&p).Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		return false
 	}
@@ -54,10 +54,10 @@ func (r *PostRepositoryImpl) IsPostExist(id int) bool {
 }
 
 // 投稿削除
-func (r *PostRepositoryImpl) DeletePostById(post *entity.Post) (int, error) {
+func (r *PostRepositoryImpl) DeletePostByID(post *entity.Post) (int, error) {
 	post.IsDeleted = true
-	if err := r.DB.Model(&entity.Post{}).Updates(&post).Error; err != nil {
-		return pkg.FailedId, err
+	if err := r.DB.Model(&entity.Post{}).Where("is_deleted").Updates(&post).Error; err != nil {
+		return pkg.FailedID, err
 	}
-	return post.Id, nil
+	return post.ID, nil
 }

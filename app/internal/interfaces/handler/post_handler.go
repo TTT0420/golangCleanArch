@@ -54,7 +54,7 @@ func (h *PostHandler) EditPost(c *gin.Context) {
 
 // 投稿削除
 func (h *PostHandler) DeletePost(c *gin.Context) {
-	id, err := h.PostUsecase.DeletePost(c)
+	id, err := h.PostUsecase.DeletePostByID(c)
 	if err != nil {
 		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{"message": pkg.ResponseNG}, err)
 		return
