@@ -41,7 +41,14 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 
 	id, err := h.PostUsecase.AddPost(post)
 	if err != nil {
-		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{pkg.ResMsg: pkg.ResNG}, err)
+		// 型アサーション
+		if appErr, ok := err.(*pkg.AppError); ok {
+			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
+			pkg.RespondJSON(c, appErr.Code, gin.H{pkg.ResMsg: appErr.Message}, nil)
+			return
+		}
+		// 予期しないエラーの場合は、500エラーで返す
+		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{pkg.ResMsg: pkg.ResMsgInternalServerErr}, nil)
 		return
 	}
 	pkg.RespondJSON(c, http.StatusOK, gin.H{pkg.ResMsg: pkg.ResOK, pkg.ResID: id}, nil)
@@ -91,7 +98,14 @@ func (h *PostHandler) DeletePost(c *gin.Context) {
 	}
 
 	if err := h.PostUsecase.DeletePostByID(id); err != nil {
-		pkg.RespondJSON(c, http.StatusBadRequest, gin.H{pkg.ResMsg: pkg.ResNG}, err)
+		// 型アサーション
+		if appErr, ok := err.(*pkg.AppError); ok {
+			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
+			pkg.RespondJSON(c, appErr.Code, gin.H{pkg.ResMsg: appErr.Message}, nil)
+			return
+		}
+		// 予期しないエラーの場合は、500エラーで返す
+		pkg.RespondJSON(c, http.StatusInternalServerError, gin.H{pkg.ResMsg: pkg.ResMsgInternalServerErr}, nil)
 		return
 	}
 	pkg.RespondJSON(c, http.StatusOK, gin.H{pkg.ResMsg: pkg.ResOK, pkg.ResID: id}, nil)
