@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func InitializeDB() *gorm.DB {
+func InitializeDB() (*gorm.DB, error) {
 	stdLogger := log.New(os.Stdout, "\r\n", log.LstdFlags)
 	newLogger := logger.New(
 		stdLogger,
@@ -24,6 +24,7 @@ func InitializeDB() *gorm.DB {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: newLogger})
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
+		return nil, err
 	}
-	return db
+	return db, nil
 }
