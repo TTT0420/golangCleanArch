@@ -16,9 +16,9 @@ func LoggingRqs(c *gin.Context) {
 	oldTime := time.Now()
 	ua := c.GetHeader("User-Agent")
 	c.Next()
-	logger.Info("incoming request",
+	logger.Info("リクエストを処理しました",
 		zap.String("path", c.Request.URL.Path),
-		zap.String("Ua", ua),
+		zap.String("User-Agent", ua),
 		zap.Int("status", c.Writer.Status()),
 		zap.Duration("elapsed", time.Since(oldTime)),
 	)

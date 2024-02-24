@@ -1,14 +1,16 @@
 package entity
 
-import "time"
+import (
+	"time"
+)
 
 type Post struct {
-	ID          int    `jdon:"id"`
+	ID          int    `json:"id"`
 	UserID      int    `json:"user_id"`
-	Title       string `json:"title"`
+	Title       string `json:"title" `
 	Content     string `json:"content"`
 	Status      int
-	IsDeleted   bool `json:"is_deleted"`
-	CreatedDate time.Time
-	UpdatedDate time.Time
+	IsDeleted   bool      `json:"is_deleted"`
+	CreatedDate time.Time `json:"created_date"`
+	UpdatedDate time.Time `json:"updated_date"`
 }
