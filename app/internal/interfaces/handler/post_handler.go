@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
+	"github.com/TTT0420/golangCleanArch/internal/interfaces/dto"
 	"github.com/TTT0420/golangCleanArch/internal/usecase"
 	"github.com/TTT0420/golangCleanArch/pkg"
 	"github.com/gin-gonic/gin"
@@ -33,9 +33,9 @@ func (h *PostHandler) GetAllPosts(c *gin.Context) {
 
 // 投稿登録
 func (h *PostHandler) AddPost(c *gin.Context) {
-	var post entity.Post
+	var post dto.AddPostReq
 	if err := c.ShouldBindJSON(&post); err != nil {
-		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: pkg.ErrMissingParam()})
 		return
 	}
 
@@ -65,7 +65,7 @@ func (h *PostHandler) EditPost(c *gin.Context) {
 		return
 	}
 
-	var post entity.Post
+	var post dto.EditPostReq
 	if err := c.ShouldBindJSON(&post); err != nil {
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return

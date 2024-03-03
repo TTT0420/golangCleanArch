@@ -29,7 +29,7 @@ func (r *PostRepositoryImpl) GetAllPosts() ([]entity.Post, error) {
 // 投稿登録
 func (r *PostRepositoryImpl) AddPost(post *entity.Post) (int, error) {
 	// CreatedDate, UpdatedDateはsqlで設定されるため、Omitで除外
-	if err := r.DB.Model(&entity.Post{}).Omit("CreatedDate", "UpdatedDate").Create(post).Error; err != nil {
+	if err := r.DB.Model(&entity.Post{}).Omit("CreatedDate", "UpdatedDate").Create(&post).Error; err != nil {
 		return pkg.FailedID, err
 	}
 

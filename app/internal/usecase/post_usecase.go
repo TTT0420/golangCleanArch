@@ -3,6 +3,7 @@ package usecase
 import (
 	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/TTT0420/golangCleanArch/internal/domain/repository"
+	"github.com/TTT0420/golangCleanArch/internal/interfaces/dto"
 	"github.com/TTT0420/golangCleanArch/pkg"
 )
 
@@ -22,12 +23,24 @@ func (u *PostUsecase) GetAllPosts() ([]entity.Post, error) {
 }
 
 // 新規追加
-func (u *PostUsecase) AddPost(post entity.Post) (int, error) {
+func (u *PostUsecase) AddPost(postReq dto.AddPostReq) (int, error) {
+	post := entity.Post{
+		UserID:  postReq.UserID,
+		Title:   postReq.Title,
+		Content: postReq.Content,
+	}
 	return u.PostRepo.AddPost(&post)
 }
 
 // 投稿編集
-func (u *PostUsecase) EditPostByID(post entity.Post) error {
+func (u *PostUsecase) EditPostByID(postReq dto.EditPostReq) error {
+
+	post := entity.Post{
+		ID:      postReq.ID,
+		Title:   postReq.Title,
+		Content: postReq.Content,
+	}
+
 	// 存在確認
 	if !u.PostRepo.IsPostExist(post.ID) {
 		return pkg.ErrRecordNotFound(post.ID)
