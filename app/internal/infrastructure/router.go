@@ -23,7 +23,7 @@ func SetupRoutes(r *gin.Engine) {
 
 	// バリデーションの初期化
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		v.RegisterValidation("ContentsCheck", pkg.ContentCheck)
+		v.RegisterValidation("ContentsCheck", pkg.ContentsCheck)
 	}
 	postRepo := repository.NewPostRepositoryImpl(db)
 	postUsecase := usecase.NewPostUsecase(postRepo)

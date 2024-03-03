@@ -6,8 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func ContentCheck(fl validator.FieldLevel) bool {
-	fmt.Println("@@@@@@チェックイン＠＠＠＠＠＠＠")
+func ContentsCheck(fl validator.FieldLevel) bool {
 	parent := fl.Parent()
 
 	title, ok := parent.FieldByName("Title").Interface().(string)
