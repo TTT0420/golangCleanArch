@@ -31,6 +31,7 @@ func (h *UserHandler) AddUser(c *gin.Context) {
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: pkg.ErrMissingParam()})
 		return
 	}
+	fmt.Printf("Requst body: %+v\n", userReq)
 
 	user := entity.Users{
 		UserID:      userReq.UserID,
@@ -50,7 +51,6 @@ func (h *UserHandler) AddUser(c *gin.Context) {
 		}
 		// TODO:ログ出力する
 		// 予期しないエラーの場合は、500エラーで返す
-		fmt.Println("asdfadsfsadfsda")
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: errors.New(pkg.ResMsgForServerError)})
 		return
 	}
