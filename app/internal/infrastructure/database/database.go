@@ -6,12 +6,14 @@ import (
 	"os"
 	"time"
 
+	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-func InitializeDB() (*gorm.DB, error) {
+func InitializeDB(logging *zap.Logger) (*gorm.DB, error) {
+	sugar := logging.Sugar()
 	stdLogger := log.New(os.Stdout, "\r\n", log.LstdFlags)
 	newLogger := logger.New(
 		stdLogger,
@@ -28,7 +30,7 @@ func InitializeDB() (*gorm.DB, error) {
 		if err == nil {
 			return db, nil
 		}
-		log.Printf("DB接続に%d回失敗しました。5秒後に再実行します。:%s", i, err)
+		sugar.Infof("DB接続に%d回失敗しました。5秒後に再実行します。:%s", i, err)
 		time.Sleep(5 * time.Second)
 	}
 

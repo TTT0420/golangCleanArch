@@ -8,7 +8,12 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.Use(pkg.LoggingRqs)
-	infrastructure.SetupRoutes(r)
+	logger, err := pkg.NewLogger()
+	if err != nil {
+		return
+	}
+	defer logger.Sync()
+	r.Use(pkg.LoggingReq(logger))
+	infrastructure.SetupRoutes(r, logger)
 	r.Run()
 }

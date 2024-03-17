@@ -7,15 +7,18 @@ import (
 	"github.com/TTT0420/golangCleanArch/internal/domain/repository"
 	"github.com/TTT0420/golangCleanArch/internal/interfaces/dto"
 	"github.com/TTT0420/golangCleanArch/pkg"
+	"go.uber.org/zap"
 )
 
 type PostUsecase struct {
 	PostRepo repository.PostRepository
+	Logger   *zap.Logger
 }
 
-func NewPostUsecase(repo repository.PostRepository) *PostUsecase {
+func NewPostUsecase(repo repository.PostRepository, logger *zap.Logger) *PostUsecase {
 	return &PostUsecase{
 		PostRepo: repo,
+		Logger:   logger,
 	}
 }
 

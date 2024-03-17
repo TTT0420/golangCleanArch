@@ -5,15 +5,17 @@ import (
 
 	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/TTT0420/golangCleanArch/pkg"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
 type PostRepositoryImpl struct {
-	DB *gorm.DB
+	DB     *gorm.DB
+	Logger *zap.Logger
 }
 
-func NewPostRepositoryImpl(db *gorm.DB) *PostRepositoryImpl {
-	return &PostRepositoryImpl{DB: db}
+func NewPostRepositoryImpl(db *gorm.DB, logger *zap.Logger) *PostRepositoryImpl {
+	return &PostRepositoryImpl{DB: db, Logger: logger}
 }
 
 // 投稿全件取得

@@ -5,15 +5,18 @@ import (
 
 	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/TTT0420/golangCleanArch/internal/domain/repository"
+	"go.uber.org/zap"
 )
 
 type UserUseCase struct {
-	UserRepo repository.UserRepostiroy
+	UserRepo repository.UserRepository
+	Logger   *zap.Logger
 }
 
-func NewUserUsecase(repo repository.UserRepostiroy) *UserUseCase {
+func NewUserUsecase(repo repository.UserRepository, logger *zap.Logger) *UserUseCase {
 	return &UserUseCase{
 		UserRepo: repo,
+		Logger:   logger,
 	}
 }
 
