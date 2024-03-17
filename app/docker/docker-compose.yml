@@ -2,8 +2,6 @@ version: '3'
 services:
   mysql:
     image: mysql:8.0.28
-    volumes:
-      - db-data:/var/lib/mysql
     platform: linux/amd64
     container_name: mysql-container
     ports:
@@ -12,6 +10,9 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=mate
       - TZ="Asia/Tokyo"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/mysql
   app:
     build: 
       context: ../
@@ -26,7 +27,7 @@ services:
     depends_on:
       - mysql
     volumes:
-      - .:/app
+      - ../:/app
 volumes:
   db-data:
     
