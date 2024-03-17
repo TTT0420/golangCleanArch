@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/TTT0420/golangCleanArch/internal/domain/entity"
+import "github.com/TTT0420/golangCleanArch/app/internal/domain/entity"
 
 type UserRepository interface {
 	AddUser(*entity.Users) (int, error)

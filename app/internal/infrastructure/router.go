@@ -3,11 +3,11 @@ package infrastructure
 import (
 	"log"
 
-	"github.com/TTT0420/golangCleanArch/internal/infrastructure/database"
-	"github.com/TTT0420/golangCleanArch/internal/infrastructure/repository"
-	"github.com/TTT0420/golangCleanArch/internal/interfaces/handler"
-	"github.com/TTT0420/golangCleanArch/internal/usecase"
-	"github.com/TTT0420/golangCleanArch/pkg"
+	"github.com/TTT0420/golangCleanArch/app/internal/infrastructure/database"
+	"github.com/TTT0420/golangCleanArch/app/internal/infrastructure/repository"
+	"github.com/TTT0420/golangCleanArch/app/internal/interfaces/handler"
+	"github.com/TTT0420/golangCleanArch/app/internal/usecase"
+	"github.com/TTT0420/golangCleanArch/app/pkg"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"

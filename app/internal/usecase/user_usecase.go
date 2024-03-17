@@ -3,8 +3,8 @@ package usecase
 import (
 	"time"
 
-	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
-	"github.com/TTT0420/golangCleanArch/internal/domain/repository"
+	"github.com/TTT0420/golangCleanArch/app/internal/domain/entity"
+	"github.com/TTT0420/golangCleanArch/app/internal/domain/repository"
 	"go.uber.org/zap"
 )
 

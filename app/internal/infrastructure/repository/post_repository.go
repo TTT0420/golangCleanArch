@@ -3,8 +3,8 @@ package repository
 import (
 	"errors"
 
-	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
-	"github.com/TTT0420/golangCleanArch/pkg"
+	"github.com/TTT0420/golangCleanArch/app/internal/domain/entity"
+	"github.com/TTT0420/golangCleanArch/app/pkg"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
