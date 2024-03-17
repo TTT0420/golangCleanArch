@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -21,10 +22,15 @@ func InitializeDB() (*gorm.DB, error) {
 		},
 	)
 	dsn := "root:root@tcp(mysql:3306)/mate?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: newLogger})
-	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
-		return nil, err
+	var err error
+	for i := 0; i < 3; i++ {
+		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: newLogger})
+		if err == nil {
+			return db, nil
+		}
+		log.Printf("DB接続に%d回失敗しました。5秒後に再実行します。:%s", i, err)
+		time.Sleep(5 * time.Second)
 	}
-	return db, nil
+
+	return nil, fmt.Errorf("DB接続に3回以上失敗しました。接続情報を確認してください: %s", err)
 }

@@ -1,15 +1,12 @@
 package entity
 
-import (
-	"time"
-)
+import "time"
 
-type Post struct {
+type Users struct {
 	ID          int       `json:"id"`
 	UserID      int       `json:"user_id"`
-	Title       string    `json:"title" `
-	Content     string    `json:"content"`
-	Status      int       `json:"status"`
+	UserName    string    `json:"user_name"`
+	UserType    int       `json:"user_type"`
 	IsDeleted   bool      `json:"is_deleted"`
 	CreatedDate time.Time `json:"created_date"`
 	UpdatedDate time.Time `json:"updated_date"`

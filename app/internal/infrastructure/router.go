@@ -25,9 +25,23 @@ func SetupRoutes(r *gin.Engine) {
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		v.RegisterValidation("ContentsCheck", pkg.ContentsCheck)
 	}
+
+	// ユーザーに関する処理
+	userRepo := repository.NewUserRepositoryImpl(db)
+	userUsecase := usecase.NewUserUsecase(userRepo)
+	userHandler := handler.NewUserHandler(*userUsecase)
+
+	// 投稿に関する処理
 	postRepo := repository.NewPostRepositoryImpl(db)
 	postUsecase := usecase.NewPostUsecase(postRepo)
 	postHandler := handler.NewPostHandler(*postUsecase)
+
+	// ユーザー関連のエンドポイント
+
+	r.GET("/get_user/:id", userHandler.GetUserByID)
+	r.POST("/add_user", userHandler.AddUser)
+	r.PATCH("/edit_user/:id", userHandler.EditUser)
+	r.DELETE("/delete_user/:id", userHandler.DeleteUser)
 
 	r.GET("/get_posts", postHandler.GetAllPosts)
 	r.POST("/add_post", postHandler.AddPost)
