@@ -5,16 +5,16 @@ FROM golang:1.20-alpine AS development
 WORKDIR /app
 
 # air のインストール
-RUN go install github.com/cosmtrek/air@latest
+RUN go install github.com/cosmtrek/air@v1.49.0
 
 # Goモジュールファイルをコピー
-COPY ./go.mod ./go.sum ./
+COPY ../go.mod ../go.sum ./
 
 # 依存関係をダウンロード
 RUN go mod download
 
 # ソースコードをコピー
-COPY . .
+COPY ../ .
 
 # air 設定ファイルのコピー
 COPY .air.toml .
