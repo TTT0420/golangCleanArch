@@ -54,7 +54,6 @@ go　x　Ginを使った簡単なCRUD webAPIです。
         └── main
 ```
 
-
 ## 動作環境
 - macOS(intel Sonoma)
 - go-version 1.20
