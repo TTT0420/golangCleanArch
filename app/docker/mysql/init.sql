@@ -2,6 +2,8 @@
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT UNIQUE COMMENT 'ユーザー固有ID',
+    user_name VARCHAR(255) COMMENT 'ユーザー名',
+    user_type TINYINT(1)  DEFAULT 1 COMMENT 'ユーザータイプ（1:通常,2:VIP）',
     is_deleted TINYINT(1) DEFAULT 0  COMMENT '削除ステータス（0:未削除,1:削除）',
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_date DATETIME ON UPDATE CURRENT_TIMESTAMP

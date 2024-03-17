@@ -13,13 +13,12 @@ func LoggingRqs(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	logger.Info("リクエストを受け付けました\n",
+		zap.String("User-Agent", c.GetHeader("User-Agent")),
+		zap.String("path", c.Request.URL.Path))
 	oldTime := time.Now()
-	ua := c.GetHeader("User-Agent")
 	c.Next()
-	logger.Info("リクエストを処理しました",
-		zap.String("path", c.Request.URL.Path),
-		zap.String("User-Agent", ua),
-		zap.Int("status", c.Writer.Status()),
-		zap.Duration("elapsed", time.Since(oldTime)),
-	)
+	logger.Info("返却内容\n", zap.Int("status", c.Writer.Status()),
+		zap.Duration("elapsed", time.Since(oldTime)))
+	logger.Info("リクエストを処理しました")
 }

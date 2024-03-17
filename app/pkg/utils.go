@@ -1,6 +1,8 @@
 package pkg
 
 import (
+	"fmt"
+
 	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +15,15 @@ type GeneralResponse struct {
 	Error   error         `json:"error,omitempty"`
 }
 
-func RespondJSON(c *gin.Context, statusCode int, resp GeneralResponse) {
+type ResForUser struct {
+	Result  string       `json:"result"`
+	Message string       `json:"message,omitempty"`
+	ID      int          `json:"id,omitempty"`
+	User    entity.Users `json:"user,omitempty"`
+	Error   error        `json:"error,omitempty"`
+}
+
+func RespondJSON(c *gin.Context, statusCode int, resp interface{}) {
+	fmt.Printf("%+v", resp)
 	c.JSON(statusCode, resp)
 }
