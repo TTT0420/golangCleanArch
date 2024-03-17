@@ -11,6 +11,6 @@ type AddPostReq struct {
 // edit_postリクエスト
 type EditPostReq struct {
 	ID      int    `json:"id"`
-	Content string `json:"content"`
-	Title   string `json:"title"`
+	Content string `json:"content" binding:"ContentsCheck"`
+	Title   string `json:"title" binding:"ContentsCheck"`
 }
