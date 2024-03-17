@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"time"
+
 	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/TTT0420/golangCleanArch/internal/domain/repository"
 	"github.com/TTT0420/golangCleanArch/internal/interfaces/dto"
@@ -25,9 +27,12 @@ func (u *PostUsecase) GetAllPosts() ([]entity.Post, error) {
 // 新規追加
 func (u *PostUsecase) AddPost(postReq dto.AddPostReq) (int, error) {
 	post := entity.Post{
-		UserID:  postReq.UserID,
-		Title:   postReq.Title,
-		Content: postReq.Content,
+		UserID:      postReq.UserID,
+		Title:       postReq.Title,
+		Content:     postReq.Content,
+		IsDeleted:   false,
+		CreatedDate: time.Now(),
+		UpdatedDate: time.Now(),
 	}
 	return u.PostRepo.AddPost(&post)
 }
@@ -36,9 +41,10 @@ func (u *PostUsecase) AddPost(postReq dto.AddPostReq) (int, error) {
 func (u *PostUsecase) EditPostByID(postReq dto.EditPostReq) error {
 
 	post := entity.Post{
-		ID:      postReq.ID,
-		Title:   postReq.Title,
-		Content: postReq.Content,
+		ID:          postReq.ID,
+		Title:       postReq.Title,
+		Content:     postReq.Content,
+		UpdatedDate: time.Now(),
 	}
 
 	// 存在確認
