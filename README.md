@@ -2,7 +2,7 @@
 golang-clean-architecuture
 
 ## 概要
-go　x　Ginを使った簡単なCRUD webAPIです。
+Golang x Ginを使った簡単なCRUD webAPIです。
 
 ## フォルダ構成
 ```
@@ -59,9 +59,10 @@ go　x　Ginを使った簡単なCRUD webAPIです。
 - macOS(intel Sonoma)
 - go-version 1.20
 - Docker-version 24.0.7
+- Air 1.49.0
   
 ## 使用方法
-/app/docker 配下でdocker compose up するだけで使用できます。
+/app/docker 配下で``` docker compose up ```するだけで使用できます。
 
 ## エンドポイント
 localhost:8080
@@ -71,4 +72,6 @@ localhost:8080
 - 一覧取得: /get_posts
 
 ## 特徴
-ミドルウェアでのログ設定やバリデーション処理を実装しています。
+- Airによるホットリロード
+- ミドルウェアでのログ設定
+- カスタムエラーによるバリデーション
