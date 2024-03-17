@@ -11,11 +11,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"go.uber.org/zap"
 )
 
-func SetupRoutes(r *gin.Engine) {
+func SetupRoutes(r *gin.Engine, logger *zap.Logger) {
 	// DB接続
-	db, err := database.InitializeDB()
+	db, err := database.InitializeDB(logger)
 	if err != nil {
 		log.Fatalf("DB接続失敗:%v", err)
 		return
@@ -27,22 +28,22 @@ func SetupRoutes(r *gin.Engine) {
 	}
 
 	// ユーザーに関する処理
-	userRepo := repository.NewUserRepositoryImpl(db)
-	userUsecase := usecase.NewUserUsecase(userRepo)
-	userHandler := handler.NewUserHandler(*userUsecase)
+	userRepo := repository.NewUserRepositoryImpl(db, logger)
+	userUsecase := usecase.NewUserUsecase(userRepo, logger)
+	userHandler := handler.NewUserHandler(*userUsecase, logger)
 
 	// 投稿に関する処理
-	postRepo := repository.NewPostRepositoryImpl(db)
-	postUsecase := usecase.NewPostUsecase(postRepo)
-	postHandler := handler.NewPostHandler(*postUsecase)
+	postRepo := repository.NewPostRepositoryImpl(db, logger)
+	postUsecase := usecase.NewPostUsecase(postRepo, logger)
+	postHandler := handler.NewPostHandler(*postUsecase, logger)
 
 	// ユーザー関連のエンドポイント
-
 	r.GET("/get_user/:id", userHandler.GetUserByID)
 	r.POST("/add_user", userHandler.AddUser)
 	r.PATCH("/edit_user/:id", userHandler.EditUser)
 	r.DELETE("/delete_user/:id", userHandler.DeleteUser)
 
+	// 投稿関連のエンドポイント
 	r.GET("/get_posts", postHandler.GetAllPosts)
 	r.POST("/add_post", postHandler.AddPost)
 	r.PATCH("/edit_post/:id", postHandler.EditPost)

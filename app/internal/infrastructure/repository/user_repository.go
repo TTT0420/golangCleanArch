@@ -1,25 +1,24 @@
 package repository
 
 import (
-	"fmt"
-
 	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
 	"github.com/TTT0420/golangCleanArch/pkg"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
-type UserRepostiroy struct {
-	DB *gorm.DB
+type UserRepository struct {
+	DB     *gorm.DB
+	Logger *zap.Logger
 }
 
-func NewUserRepositoryImpl(db *gorm.DB) *UserRepostiroy {
-	return &UserRepostiroy{DB: db}
+func NewUserRepositoryImpl(db *gorm.DB, logger *zap.Logger) *UserRepository {
+	return &UserRepository{DB: db, Logger: logger}
 }
 
 // ユーザー登録
-func (r *UserRepostiroy) AddUser(user *entity.Users) (int, error) {
+func (r *UserRepository) AddUser(user *entity.Users) (int, error) {
 	if err := r.DB.Model(&entity.Users{}).Create(&user).Error; err != nil {
-		fmt.Println("asdfsdfs", err)
 		return pkg.FailedID, err
 	}
 
@@ -27,7 +26,7 @@ func (r *UserRepostiroy) AddUser(user *entity.Users) (int, error) {
 }
 
 // ユーザー情報取得
-func (r *UserRepostiroy) GetUserByID(id int) (*entity.Users, error) {
+func (r *UserRepository) GetUserByID(id int) (*entity.Users, error) {
 	var user entity.Users
 	if err := r.DB.Model(&entity.Users{}).Where("user_id = ?", id).First(&user).Error; err != nil {
 		return nil, err
@@ -36,7 +35,7 @@ func (r *UserRepostiroy) GetUserByID(id int) (*entity.Users, error) {
 }
 
 // ユーザー情報更新
-func (r *UserRepostiroy) UpdateUserByID(user *entity.Users) error {
+func (r *UserRepository) UpdateUserByID(user *entity.Users) error {
 	if err := r.DB.Model(&entity.Users{}).Where("user_id = ?", user.UserID).Updates(user).Error; err != nil {
 		return err
 	}
@@ -44,7 +43,7 @@ func (r *UserRepostiroy) UpdateUserByID(user *entity.Users) error {
 }
 
 // ユーザー削除
-func (r *UserRepostiroy) DeleteUserByID(id int) error {
+func (r *UserRepository) DeleteUserByID(id int) error {
 	if err := r.DB.Model(&entity.Users{}).Where("user_id= ?", id).Update("is_deleted", true).Error; err != nil {
 		return err
 	}

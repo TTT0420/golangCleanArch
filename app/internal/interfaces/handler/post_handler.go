@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -8,22 +9,32 @@ import (
 	"github.com/TTT0420/golangCleanArch/internal/usecase"
 	"github.com/TTT0420/golangCleanArch/pkg"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type PostHandler struct {
 	PostUsecase usecase.PostUsecase
+	Logger      *zap.Logger
 }
 
-func NewPostHandler(postUsecase usecase.PostUsecase) *PostHandler {
+func NewPostHandler(postUsecase usecase.PostUsecase, logger *zap.Logger) *PostHandler {
 	return &PostHandler{
 		PostUsecase: postUsecase,
+		Logger:      logger,
 	}
 }
 
 // 全件取得
 func (h *PostHandler) GetAllPosts(c *gin.Context) {
+	logger, err := pkg.GetLogger(c)
+	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
+		return
+	}
 	posts, err := h.PostUsecase.GetAllPosts()
 	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
@@ -33,8 +44,15 @@ func (h *PostHandler) GetAllPosts(c *gin.Context) {
 
 // 投稿登録
 func (h *PostHandler) AddPost(c *gin.Context) {
+	logger, err := pkg.GetLogger(c)
+	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
+		return
+	}
 	var post dto.AddPostReq
 	if err := c.ShouldBindJSON(&post); err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: pkg.ErrMissingParam()})
 		return
 	}
@@ -48,6 +66,7 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
@@ -57,16 +76,23 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 
 // 投稿編集
 func (h *PostHandler) EditPost(c *gin.Context) {
-
+	logger, err := pkg.GetLogger(c)
+	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
+		return
+	}
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
 
 	var post dto.EditPostReq
 	if err := c.ShouldBindJSON(&post); err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
@@ -80,6 +106,7 @@ func (h *PostHandler) EditPost(c *gin.Context) {
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
@@ -89,10 +116,17 @@ func (h *PostHandler) EditPost(c *gin.Context) {
 
 // 投稿削除
 func (h *PostHandler) DeletePost(c *gin.Context) {
+	logger, err := pkg.GetLogger(c)
+	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
+		return
+	}
 
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}
@@ -105,6 +139,7 @@ func (h *PostHandler) DeletePost(c *gin.Context) {
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 		return
 	}

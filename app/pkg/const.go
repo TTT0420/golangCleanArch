@@ -6,4 +6,5 @@ const (
 	FailedID             = -1   // 失敗時のIDパラメーター ex) { "message": "NG","id": -1 }
 	ResMsgForInvalidReq  = "不正なリクエストです"
 	ResMsgForServerError = "予期しないエラーが発生しました"
+	LogMsgForServerError = "エラーが発生しました"
 )

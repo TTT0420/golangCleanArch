@@ -12,22 +12,33 @@ import (
 	"github.com/TTT0420/golangCleanArch/internal/usecase"
 	"github.com/TTT0420/golangCleanArch/pkg"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type UserHandler struct {
 	UserUseCase usecase.UserUseCase
+	Logger      *zap.Logger
 }
 
-func NewUserHandler(usecase usecase.UserUseCase) *UserHandler {
+func NewUserHandler(usecase usecase.UserUseCase, logger *zap.Logger) *UserHandler {
 	return &UserHandler{
 		UserUseCase: usecase,
+		Logger:      logger,
 	}
 }
 
 // ユーザー登録
 func (h *UserHandler) AddUser(c *gin.Context) {
+
+	logger, err := pkg.GetLogger(c)
+	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
+		return
+	}
 	var userReq dto.AddUserReq
 	if err := c.BindJSON(&userReq); err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: pkg.ErrMissingParam()})
 		return
 	}
@@ -49,8 +60,8 @@ func (h *UserHandler) AddUser(c *gin.Context) {
 			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 			return
 		}
-		// TODO:ログ出力する
 		// 予期しないエラーの場合は、500エラーで返す
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: errors.New(pkg.ResMsgForServerError)})
 		return
 	}
@@ -59,9 +70,15 @@ func (h *UserHandler) AddUser(c *gin.Context) {
 
 // ユーザー情報取得
 func (h *UserHandler) GetUserByID(c *gin.Context) {
+	logger, err := pkg.GetLogger(c)
+	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
+		return
+	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		// TODO:ログ出力する
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
 		return
 	}
@@ -75,6 +92,7 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
 		return
 	}
@@ -83,14 +101,21 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 
 // ユーザー情報更新
 func (h *UserHandler) EditUser(c *gin.Context) {
+	logger, err := pkg.GetLogger(c)
+	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
+		return
+	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		// TODO:ログ出力する
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
 		return
 	}
 	var user entity.Users
 	if err := c.BindJSON(&user); err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: pkg.ErrMissingParam()})
 		return
 	}
@@ -104,8 +129,8 @@ func (h *UserHandler) EditUser(c *gin.Context) {
 			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.ResNG, Error: err})
 			return
 		}
-		// TODO:ログ出力する
 		// 予期しないエラーの場合は、500エラーで返す
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
 		return
 	}
@@ -115,9 +140,15 @@ func (h *UserHandler) EditUser(c *gin.Context) {
 
 // ユーザー削除
 func (h *UserHandler) DeleteUser(c *gin.Context) {
+	logger, err := pkg.GetLogger(c)
+	if err != nil {
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
+		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
+		return
+	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		// TODO:ログ出力する
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
 		return
 	}
@@ -129,6 +160,7 @@ func (h *UserHandler) DeleteUser(c *gin.Context) {
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
+		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
 		return
 	}
