@@ -3,7 +3,7 @@ package pkg
 import (
 	"fmt"
 
-	"github.com/TTT0420/golangCleanArch/internal/domain/entity"
+	"github.com/TTT0420/golangCleanArch/app/internal/domain/entity"
 	"github.com/gin-gonic/gin"
 )
 

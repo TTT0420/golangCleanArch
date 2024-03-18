@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/TTT0420/golangCleanArch/internal/infrastructure"
-	"github.com/TTT0420/golangCleanArch/pkg"
+	"github.com/TTT0420/golangCleanArch/app/internal/infrastructure"
+	"github.com/TTT0420/golangCleanArch/app/pkg"
 	"github.com/gin-gonic/gin"
 )
 

@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/TTT0420/golangCleanArch/internal/interfaces/dto"
-	"github.com/TTT0420/golangCleanArch/internal/usecase"
-	"github.com/TTT0420/golangCleanArch/pkg"
+	"github.com/TTT0420/golangCleanArch/app/internal/interfaces/dto"
+	"github.com/TTT0420/golangCleanArch/app/internal/usecase"
+	"github.com/TTT0420/golangCleanArch/app/pkg"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
