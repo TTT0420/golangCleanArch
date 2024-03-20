@@ -1,8 +1,6 @@
 package pkg
 
 import (
-	"fmt"
-
 	"github.com/TTT0420/golangCleanArch/app/internal/domain/entity"
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +22,5 @@ type ResForUser struct {
 }
 
 func RespondJSON(c *gin.Context, statusCode int, resp interface{}) {
-	fmt.Printf("%+v", resp)
 	c.JSON(statusCode, resp)
 }
