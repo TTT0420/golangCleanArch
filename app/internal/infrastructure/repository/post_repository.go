@@ -39,8 +39,12 @@ func (r *PostRepositoryImpl) AddPost(post *entity.Post) (int, error) {
 
 // 投稿編集
 func (r *PostRepositoryImpl) UpdatePostByID(post *entity.Post) error {
-	if err := r.DB.Model(&entity.Post{}).Where("ID = ?", post.ID).Updates(post).Error; err != nil {
-		return err
+	result := r.DB.Model(&entity.Post{}).Where("id = ?", post.ID).Updates(post)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("no rows affected")
 	}
 	return nil
 }
@@ -58,8 +62,11 @@ func (r *PostRepositoryImpl) IsPostExist(ID int) bool {
 // 投稿削除
 func (r *PostRepositoryImpl) DeletePostByID(id int) error {
 	// 論理削除はis_deletedのみの更新で良いので、Updateを使用
-	if err := r.DB.Model(&entity.Post{}).Where("id = ?", id).Update("IsDeleted", true).Error; err != nil {
-		return err
+	result := r.DB.Model(&entity.Post{}).Where("id = ?", id).Update("IsDeleted", true)
+	if result.RowsAffected == 0 {
+		return errors.New("record not found")
+	} else if result.Error != nil {
+		return result.Error
 	}
 	return nil
 }

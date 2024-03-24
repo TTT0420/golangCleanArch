@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -28,7 +29,7 @@ func NewPostHandler(postUsecase usecase.PostUsecase, logger *zap.Logger) *PostHa
 func (h *PostHandler) GetAllPosts(c *gin.Context) {
 	logger, err := pkg.GetLogger(c)
 	if err != nil {
-		logger.Error(pkg.LogMsgForServerError, zap.Error(err))
+		log.Printf("error: %v", err)
 		pkg.RespondJSON(c, http.StatusBadRequest, pkg.GeneralResponse{Result: pkg.ResNG, Error: fmt.Errorf(pkg.ResMsgForServerError)})
 		return
 	}
