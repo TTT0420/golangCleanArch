@@ -55,9 +55,10 @@ func (h *UserHandler) AddUser(c *gin.Context) {
 	id, err := h.UserUseCase.AddUser(&user)
 	if err != nil {
 		// 型アサーション
-		if appErr, ok := err.(*pkg.AppError); ok {
+		var e *pkg.AppError
+		if errors.As(err, &e) {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
+			pkg.RespondJSON(c, e.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
@@ -86,9 +87,10 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 	user, err := h.UserUseCase.GetUserByID(id)
 	if err != nil {
 		// 型アサーション
-		if appErr, ok := err.(*pkg.AppError); ok {
+		var e *pkg.AppError
+		if errors.As(err, &e) {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
+			pkg.RespondJSON(c, e.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
@@ -124,9 +126,10 @@ func (h *UserHandler) EditUser(c *gin.Context) {
 	user.UserID = id
 	if err := h.UserUseCase.UpdateUserByID(&user); err != nil {
 		// 型アサーション
-		if appErr, ok := err.(*pkg.AppError); ok {
+		var e *pkg.AppError
+		if errors.As(err, &e) {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
+			pkg.RespondJSON(c, e.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
@@ -154,9 +157,10 @@ func (h *UserHandler) DeleteUser(c *gin.Context) {
 	}
 	if err := h.UserUseCase.DeleteUserByID(id); err != nil {
 		// 型アサーション
-		if appErr, ok := err.(*pkg.AppError); ok {
+		var e *pkg.AppError
+		if errors.As(err, &e) {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
+			pkg.RespondJSON(c, e.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す

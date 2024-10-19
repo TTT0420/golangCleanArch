@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -61,11 +62,13 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 	id, err := h.PostUsecase.AddPost(post)
 	if err != nil {
 		// 型アサーション
-		if appErr, ok := err.(*pkg.AppError); ok {
+		var e *pkg.AppError
+		if errors.As(err, &e) {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
+			pkg.RespondJSON(c, e.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
 			return
 		}
+
 		// 予期しないエラーの場合は、500エラーで返す
 		logger.Error(pkg.SERVER_ERROR_MSG, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.NG, Error: err})
@@ -101,11 +104,13 @@ func (h *PostHandler) EditPost(c *gin.Context) {
 	post.ID = id
 	if err := h.PostUsecase.EditPostByID(post); err != nil {
 		// 型アサーション
-		if appErr, ok := err.(*pkg.AppError); ok {
+		var e *pkg.AppError
+		if errors.As(err, &e) {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
+			pkg.RespondJSON(c, e.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
 			return
 		}
+
 		// 予期しないエラーの場合は、500エラーで返す
 		logger.Error(pkg.SERVER_ERROR_MSG, zap.Error(err))
 		pkg.RespondJSON(c, http.StatusInternalServerError, pkg.GeneralResponse{Result: pkg.NG, Error: err})
@@ -134,9 +139,10 @@ func (h *PostHandler) DeletePost(c *gin.Context) {
 
 	if err := h.PostUsecase.DeletePostByID(id); err != nil {
 		// 型アサーション
-		if appErr, ok := err.(*pkg.AppError); ok {
+		var e *pkg.AppError
+		if errors.As(err, &e) {
 			// カスタムエラーの場合は、関連付けられたHTTPステータスコードでレスポンス
-			pkg.RespondJSON(c, appErr.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
+			pkg.RespondJSON(c, e.Code, pkg.GeneralResponse{Result: pkg.NG, Error: err})
 			return
 		}
 		// 予期しないエラーの場合は、500エラーで返す
