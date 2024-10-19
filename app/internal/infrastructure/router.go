@@ -24,7 +24,9 @@ func SetupRoutes(r *gin.Engine, logger *zap.Logger) {
 
 	// バリデーションの初期化
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		v.RegisterValidation("ContentsCheck", pkg.ContentsCheck)
+		if err := v.RegisterValidation("ContentsCheck", pkg.ContentsCheck); err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	// ユーザーに関する処理
