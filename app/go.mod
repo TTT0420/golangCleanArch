@@ -1,8 +1,6 @@
 module github.com/TTT0420/golangCleanArch/app
 
-go 1.22.0
-
-toolchain go1.23.1
+go 1.23
 
 require (
 	github.com/dolthub/go-mysql-server v0.18.1

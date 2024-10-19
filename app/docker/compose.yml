@@ -9,6 +9,12 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=mate
       - TZ="Asia/Tokyo"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "mysql", "-u", "root", "--password=root"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
     volumes:
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
       - db-data:/var/lib/mysql
@@ -21,11 +27,13 @@ services:
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_NAME=mate
+      - DB_PORT=3306
       - ENVIRONMENT=local
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     volumes:
       - ../:/app
 volumes:
