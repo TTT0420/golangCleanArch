@@ -2,13 +2,11 @@ package pkg
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/TTT0420/golangCleanArch/app/internal/domain/entity"
 	"github.com/dolthub/go-mysql-server/driver"
 	"github.com/dolthub/go-mysql-server/memory"
 	sqle "github.com/dolthub/go-mysql-server/sql"
@@ -26,11 +24,12 @@ func NewTestDb(dbname string) *gorm.DB {
 			Colorful:      true,        // ログの色付けを有効にする
 		},
 	)
-	db, _ :=
+
+	db, err :=
 		gorm.Open(mysql.New(mysql.Config{Conn: New(dbname)}), nil, &gorm.Config{Logger: newLogger})
-
-	db.AutoMigrate(&entity.Post{})
-
+	if err != nil {
+		log.Fatal(err)
+	}
 	return db
 }
 
@@ -52,11 +51,13 @@ func New(dbNames ...string) *sql.DB {
 	drv := driver.New(memdbs, nil)
 	conn, err := drv.OpenConnector(strings.Join(dbNames, ";"))
 	if err != nil {
-		fmt.Println("asfd")
+		log.Fatal(err)
 	}
 	db := sql.OpenDB(conn)
 	if len(dbNames) > 0 {
-		db.Exec("USE " + dbNames[0])
+		if _, err := db.Exec("USE " + dbNames[0]); err != nil {
+			log.Fatal(err)
+		}
 	}
 	return db
 }
