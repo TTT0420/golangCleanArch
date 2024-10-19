@@ -31,7 +31,7 @@ func (r *PostRepositoryImpl) GetAllPosts() ([]entity.Post, error) {
 // 投稿登録
 func (r *PostRepositoryImpl) AddPost(post *entity.Post) (int, error) {
 	if err := r.DB.Model(&entity.Post{}).Create(&post).Error; err != nil {
-		return pkg.FailedID, err
+		return pkg.FAILED_ID, err
 	}
 
 	return post.ID, nil

@@ -19,7 +19,7 @@ func NewUserRepositoryImpl(db *gorm.DB, logger *zap.Logger) *UserRepository {
 // ユーザー登録
 func (r *UserRepository) AddUser(user *entity.Users) (int, error) {
 	if err := r.DB.Model(&entity.Users{}).Create(&user).Error; err != nil {
-		return pkg.FailedID, err
+		return pkg.FAILED_ID, err
 	}
 
 	return user.UserID, nil

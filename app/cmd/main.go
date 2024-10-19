@@ -12,7 +12,7 @@ func main() {
 	r := gin.Default()
 	logger, err := pkg.NewLogger()
 	if err != nil {
-		log.Println(pkg.LogMsgForServerError, err)
+		log.Println(err)
 		return
 	}
 	defer logger.Sync()

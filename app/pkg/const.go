@@ -1,10 +1,9 @@
 package pkg
 
 const (
-	ResOK                = "OK" //　正常時のmessageパラメーター
-	ResNG                = "NG" //　失敗時のmessageパラメーター
-	FailedID             = -1   // 失敗時のIDパラメーター ex) { "message": "NG","id": -1 }
-	ResMsgForInvalidReq  = "不正なリクエストです"
-	ResMsgForServerError = "予期しないエラーが発生しました"
-	LogMsgForServerError = "エラーが発生しました"
+	OK               = "OK" //　正常時のmessageパラメーター
+	NG               = "NG" //　失敗時のmessageパラメーター
+	FAILED_ID        = -1   // 失敗時のIDパラメーター ex) { "message": "NG","id": -1 }
+	INVALID_REQ_MSG  = "不正なリクエストです"
+	SERVER_ERROR_MSG = "予期しないエラーが発生しました"
 )
