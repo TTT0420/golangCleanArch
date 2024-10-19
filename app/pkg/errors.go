@@ -28,5 +28,5 @@ func ErrRecordNotFound(id int) error {
 
 // 共通エラーメソッド。パラメーター
 func ErrMissingParam() error {
-	return NewAppError(http.StatusBadRequest, ResMsgForInvalidReq)
+	return NewAppError(http.StatusBadRequest, INVALID_REQ_MSG)
 }

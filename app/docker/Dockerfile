@@ -1,5 +1,5 @@
 # ベースイメージ
-FROM golang:1.20-alpine AS development
+FROM golang:1.23-alpine AS development
 
 # 作業ディレクトリの設定
 WORKDIR /app

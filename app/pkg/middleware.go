@@ -9,6 +9,7 @@ import (
 
 func LoggingReq(logger *zap.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		c.Set("logger", logger)
 		logger.Info("リクエストを受け付けました\n",
 			zap.String("User-Agent", c.GetHeader("User-Agent")),
 			zap.String("path", c.Request.URL.Path))

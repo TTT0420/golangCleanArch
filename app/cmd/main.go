@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/TTT0420/golangCleanArch/app/internal/infrastructure"
@@ -12,11 +13,17 @@ func main() {
 	r := gin.Default()
 	logger, err := pkg.NewLogger()
 	if err != nil {
-		log.Println(pkg.LogMsgForServerError, err)
+		log.Println(err)
 		return
 	}
-	defer logger.Sync()
+	defer func() {
+		if err := logger.Sync(); err != nil {
+			logger.Error(fmt.Sprintf("予期せぬエラーが発生しました.%v", err))
+		}
+	}()
 	r.Use(pkg.LoggingReq(logger))
 	infrastructure.SetupRoutes(r, logger)
-	r.Run()
+	if err := r.Run(); err != nil {
+		logger.Error(fmt.Sprintf("予期せぬエラーが発生しました.%v", err))
+	}
 }
