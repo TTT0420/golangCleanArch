@@ -6,11 +6,9 @@ require (
 	github.com/dolthub/go-mysql-server v0.18.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-playground/validator/v10 v10.14.0
-	github.com/golang/mock v1.6.0
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.26.0
 	gorm.io/driver/mysql v1.5.2
-	gorm.io/driver/sqlite v1.5.5
 	gorm.io/gorm v1.25.7
 )
 
@@ -42,7 +40,6 @@ require (
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/lestrrat-go/strftime v1.0.6 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
-	github.com/mattn/go-sqlite3 v1.14.22 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
@@ -54,7 +51,6 @@ require (
 	github.com/tetratelabs/wazero v1.7.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
-	github.com/yuin/goldmark v1.4.13 // indirect
 	go.opentelemetry.io/otel v1.24.0 // indirect
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
